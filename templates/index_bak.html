@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <title> Calculate BMI</title>
+  <head>
+    <link href="../static/assets/css/main.css" rel="stylesheet">
+  </head>
+    <body>
+      <div class="container">
+        <h1>Collecting data</h1>
+        <h3>Please fill below informations</h3>
+        <div class="bmi"> {{text | safe}} </div>
+        <form action="{{url_for('success')}}" method="POST">
+          <input title="Your Height" placeholder="Enter your height in cm" type="number"  min="50", max="300" name="height_name" required> <br>
+          <input title="Your Weight" placeholder="Enter your weight in kg" type="number" min="20", max="300" name="weight_name" required> <br>
+          <button type="submit"> Submit </button>
+        </form>
+
+        <form action="{{url_for('get_table')}}" method="POST">
+          <button type="submit"> Get Table </button>
+        </form>
+
+        <form action="{{url_for('get_columns')}}" method="POST">
+          <input title="Table Name" placeholder="Enter Table Name" type="text" name="table_name" required> <br>
+          <button type="submit"> Get Columns </button>
+        </form>
+
+        <form action="{{url_for('query_hive')}}" method="POST">
+          <button type="submit"> Hive Query </button>
+        </form>
+
+        <form action="{{url_for('query_sparksql')}}" method="POST">
+          <button type="submit"> Spark Query </button>
+        </form>
+
+      </div>
+    </body>
+</html>
