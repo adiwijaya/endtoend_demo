@@ -52,12 +52,17 @@ def get_columns():
 def query_hive():
     if request.method=='POST':
         from pyhive import hive
-        import pandas as pd
+        conn = hive.Connection(host="209.97.172.240", port=10000, auth="NOSASL",username="mapr")
+        cursor = conn.cursor()
+        cursor.execute("SELECT cool_stuff FROM hive_table")
+        for result in cursor.fetchall():
+            use_result(result)
 
-        conn = hive.Connection(host="209.97.172.240", port=10000, auth="NONE",username="mapr")
-        df = pd.read_sql("SELECT * FROM bank LIMIT 10", conn)
+        #import pandas as pd
+        #conn = hive.Connection(host="209.97.172.240", port=10000, auth="NOSASL",username="mapr")
+        #df = pd.read_sql("SELECT * FROM default.bank LIMIT 10", conn)
 
-        df.show()
+        #df.show()
         return render_template('index.html', text=data)
 
 import findspark
@@ -65,8 +70,8 @@ findspark.init()
 from pyspark import SparkContext
 from pyspark.sql import SQLContext
 from pyspark.sql.types import *
-@app.route("/query_sparksql", methods=['POST'])
-def query_sparksql():
+@app.route("/spark_process", methods=['POST'])
+def spark_process():
     if request.method=='POST':
         from spark import get_spark
         spark_session = get_spark()
@@ -78,6 +83,16 @@ def query_sparksql():
 
         return render_template('index.html', text="This is calculated using Spark. Result is : %s"%count)
 
+@app.route("/spark_query", methods=['POST'])
+def spark_query():
+    if request.method=='POST':
+        from spark import get_spark
+        spark_session = get_spark()
+        sc = spark_session.sparkContext
+        df = spark_session.sql("SELECT * FROM default.bank LIMIT 100")
+        df.show()
+
+        return render_template('index.html', text="This is calculated using Spark. Result is : %s"%count)
 
 
 if __name__ == '__main__':

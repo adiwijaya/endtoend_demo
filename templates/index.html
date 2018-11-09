@@ -43,11 +43,14 @@
 				<div class="inner">
 					<div class="content">
 
-					<!-- Elements -->
-						<div class="row">
-							<div class="col-6 col-12-medium">
+					<h3>Result Bar</h3>
+					<div class="col-12"> {{text | safe}} </div> </br>
 
-									<div> {{text | safe}} </div>
+					<!-- Python Function Demo -->
+					<h3>Python Function</h3>
+						<div class="row">
+							<div class="col-12 col-12-medium">
+
 									<form action="{{url_for('success')}}" method="POST">
 										<div class="row gtr-uniform">
 											<div class="col-6 col-12-xsmall">
@@ -62,25 +65,51 @@
 											</div>
 									</form>
 
+									<!-- Hcatalog Hive Table -->
 									<form action="{{url_for('get_table')}}" method="POST">
-										<input type="submit" value=" Get Table" class="primary"> </input>  <br>
+										<h3>HCatalog Hive</h3>
+										<div class="row gtr-uniform">
+											<div class="col-12">
+												<input type="submit" value=" Get Table" class="primary"> </input>
+											</div>
 									</form>
 
+									<!-- Hcatalog Hive Columns-->
 									<form action="{{url_for('get_columns')}}" method="POST">
-					          <input title="Table Name" placeholder="Enter Table Name" type="text" name="table_name" required>  <br>
-										<input type="submit" value="Get Columns" class="primary"> </input>
-					        </form>
+										<h3>HCatalog Hive Columns</h3>
+										<div class="row gtr-uniform">
+											<div class="col-6 col-12-xsmall">
+												<input title="Table Name" placeholder="Enter Table Name" type="text" name="table_name" required>  <br>
+												<input type="submit" value="Get Columns" class="primary"> </input>
+											</div>
+									</form>
 
-					        <form action="{{url_for('query_hive')}}" method="POST">
-										<input type="submit" value="Hive Query" class="primary"> </input>
-					        </form>
+									<!-- Hive Query Get Data -->
+									<form action="{{url_for('query_hive')}}" method="POST">
+										<h3>Hive Query</h3>
+										<div class="row gtr-uniform">
+											<div class="col-6 col-12-xsmall">
+												<input type="submit" value="Hive Query" class="primary"> </input>
+											</div>
+									</form>
 
-					        <form action="{{url_for('query_sparksql')}}" method="POST">
-										<input type="submit" value="Spark Query" class="primary"> </input>
-					        </form>
+									<!-- Spark RDD Process Data -->
+									<form action="{{url_for('spark_process')}}" method="POST">
+										<h3>Spark RDD Process</h3>
+										<div class="row gtr-uniform">
+											<div class="col-6 col-12-xsmall">
+												<input type="submit" value="Spark Process" class="primary"> </input>
+											</div>
+									</form>
 
-
-
+									<!-- Spark Query Process Data -->
+									<form action="{{url_for('spark_query')}}" method="POST">
+										<h3>Spark Query SQL</h3>
+										<div class="row gtr-uniform">
+											<div class="col-6 col-12-xsmall">
+												<input type="submit" value="Spark Query" class="primary"> </input>
+											</div>
+									</form>
 
 							</div>
 						</div>
