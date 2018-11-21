@@ -143,7 +143,7 @@ def spark_api():
         params = {"word": word}
         result = requests.post(url, params=params, json=data)
         #json_data = json.loads(result.text)
-        return render_template('index.html', text="This is a process running from other Spark Service through API, its calculating length of word inputted. \n Result : %s"%sresult.text)
+        return render_template('index.html', text="This is a process running from other Spark Service through API, its calculating length of word inputted. \n Result : %s"%result.text)
 
 @app.route("/spark_hive_api", methods=['POST'])
 def spark_hive_api():
