@@ -114,7 +114,7 @@ def spark_process():
         rdd = sc.parallelize(array)
         count = str(rdd.count())
 
-        return render_template('index.html', text="This is calculated using Spark, its counting number of columns results from 'Get Columns' Features.\n Result is : %s"%count)
+        return render_template('index.html', text="This is calculated using Spark, its counting number of tables results from 'Get Table' Features.\n Result is : %s"%count)
 
 @app.route("/spark_query", methods=['POST'])
 def spark_query():

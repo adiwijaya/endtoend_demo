@@ -1,10 +1,14 @@
 import numpy as np
 import pandas as pd
 from sklearn.externals import joblib
+import os.path
 
 def predict(sex,age):
     # Load Model
-    model_loaded = joblib.load('ml_model/model_risk.pkl')
+    my_path = os.path.abspath(os.path.dirname(__file__))
+    path = os.path.join(my_path, "../ml_model/model_risk.pkl")
+
+    model_loaded = joblib.load(path)
 
     # Static Variables
     sex_female_flag=0
