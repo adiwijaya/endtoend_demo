@@ -4,7 +4,7 @@ from sklearn.externals import joblib
 
 def predict(sex,age):
     # Load Model
-    model_loaded = joblib.load('C:/Users/adiwi/Documents/work/Atom_Project_Folder/demo_web/demo_web/ml_model/model_risk.pkl')
+    model_loaded = joblib.load('ml_model/model_risk.pkl')
 
     # Static Variables
     sex_female_flag=0

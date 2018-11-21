@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from util import get_random_email, get_timestamp,get_random_amount
 from settings import *
+from predict import predict
 
 app=Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
@@ -54,7 +55,7 @@ def success():
         db.session.add(data)
         db.session.commit()
 
-        return render_template('index.html', text="This is calculated using Python : Your BMI is %s"%bmi)
+        return render_template('index.html', text="This is calculated using Python : Your BMI is %s \n This is a simple logic calculated in Python, Python is a multipurpose programming language"%bmi)
     return render_template('index.html', text="Seems like we got something from that email once!")
 
 @app.route("/get_table", methods=['POST'])
@@ -68,7 +69,7 @@ def get_table():
         result = data['tables']
         session['list_tables'] = result
         print(data)
-        return render_template('index.html', text="This result taken from hcat hive. The result is %s"%result)
+        return render_template('index.html', text="This result taken from hcat hive, on hadoop cluster.\n The result is %s"%result)
 
 @app.route("/get_columns", methods=['POST'])
 def get_columns():
@@ -80,22 +81,22 @@ def get_columns():
         print(data)
         return render_template('index.html', text=data)
 
-@app.route("/query_hive", methods=['POST'])
-def query_hive():
-    if request.method=='POST':
-        from pyhive import hive
-        conn = hive.Connection(host=host_hive, port=10000, auth="NOSASL",username="adi",database="default")
-        #cursor = conn.cursor()
-        #cursor.execute("SELECT * FROM bankclasssample")
-        #for result in cursor.fetchall():
-        #    use_result(result)
-
-        #import pandas as pd
-        conn = hive.Connection(host=host_hive, port=10000, auth="NOSASL",username="adi")
-        df = pd.read_sql("SELECT * FROM default.bank LIMIT 10", conn)
-
-        #df.show()
-        return render_template('index.html', text=data)
+# @app.route("/query_hive", methods=['POST'])
+# def query_hive():
+#     if request.method=='POST':
+#         from pyhive import hive
+#         conn = hive.Connection(host=host_hive, port=10000, auth="NOSASL",username="adi",database="default")
+#         #cursor = conn.cursor()
+#         #cursor.execute("SELECT * FROM bankclasssample")
+#         #for result in cursor.fetchall():
+#         #    use_result(result)
+#
+#         #import pandas as pd
+#         conn = hive.Connection(host=host_hive, port=10000, auth="NOSASL",username="adi")
+#         df = pd.read_sql("SELECT * FROM default.bank LIMIT 10", conn)
+#
+#         #df.show()
+#         return render_template('index.html', text=data)
 
 import findspark
 findspark.init()
@@ -113,7 +114,7 @@ def spark_process():
         rdd = sc.parallelize(array)
         count = str(rdd.count())
 
-        return render_template('index.html', text="This is calculated using Spark. Result is : %s"%count)
+        return render_template('index.html', text="This is calculated using Spark, its counting number of columns results from 'Get Columns' Features.\n Result is : %s"%count)
 
 @app.route("/spark_query", methods=['POST'])
 def spark_query():
@@ -142,7 +143,7 @@ def spark_api():
         params = {"word": word}
         result = requests.post(url, params=params, json=data)
         #json_data = json.loads(result.text)
-        return render_template('index.html', text=result.text)
+        return render_template('index.html', text="This is a process running from other Spark Service through API, its calculating length of word inputted. \n Result : %s"%sresult.text)
 
 @app.route("/spark_hive_api", methods=['POST'])
 def spark_hive_api():
@@ -180,7 +181,7 @@ def build_model_ml_spark_api():
          data = {"table_name": table_name,"target_col":target_col}
          params = {"table_name": table_name,"target_col":target_col}
          result = requests.post(url, params=params, json=data)
-         return render_template('index.html', text=result.text)
+         return render_template('index.html', text="SUCCESS, now try Predict API")
 
 @app.route("/predict_ml_spark_api", methods=['POST'])
 def predict_ml_spark_api():
@@ -194,7 +195,7 @@ def predict_ml_spark_api():
          data = {"table_name": table_name}
          params = {"table_name": table_name}
          result = requests.post(url, params=params, json=data)
-         return render_template('index.html', text=result.text)
+         return render_template('index.html', text="SUCCESS, this process generate a prediction CSV in linux directory and hive table named model_predict_result")
 
 
 
@@ -210,7 +211,7 @@ def generate_random_transaction():
         db.session.add(tx_data)
         db.session.commit()
 
-        return render_template('index.html', text="Random Transaction Data Generated. Email %s , Time %s, Amount %s"%(email,str(time),str(amount)))
+        return render_template('index.html', text="This generate data to PostgreSQL Database, its an illustration for Transaction Apps. \n Random Transaction Data Generated. Email %s , Time %s, Amount %s"%(email,str(time),str(amount)))
 
 @app.route("/postgres_to_hive", methods=['POST'])
 def postgres_to_hive():
@@ -219,7 +220,7 @@ def postgres_to_hive():
         sqoopcom="sqoop import --connect jdbc:postgresql://%s/default_db --username postgres -password DataLabsP@ssw0rd --table transaction_data_dummy --hive-import --target-dir /user/hive/warehouse/transaction_data_dummy  --delete-target-dir --direct"%postgres_host
         os.system(sqoopcom)
 
-        return render_template('index.html', text="Success Transfer data from postgres to Hive")
+        return render_template('index.html', text="This is simulation for batch ETL Process using sqoop. \n Success Transfer data from postgres to Hive, please check transaction_data_dummy in hive for access")
 
 
 if __name__ == '__main__':

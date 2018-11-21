@@ -86,14 +86,7 @@
 													</div>
 											</form>
 
-											<!-- Hive Query Get Data -->
-											<form action="{{url_for('query_hive')}}" method="POST">
-												<h3>Hive Query</h3>
-												<div class="row uniform">
-													<div class="12u$">
-														<input type="submit" value="Hive Query" class="primary"> </input>
-													</div>
-											</form>
+	
 
 											<!-- Spark RDD Process Data -->
 											<form action="{{url_for('spark_process')}}" method="POST">
@@ -109,7 +102,7 @@
 												<h3>Spark Query SQL</h3>
 												<div class="row uniform">
 													<div class="12u$">
-														<input title="Query Text" placeholder="SELECT * FROM default.bank" type="text" name="query_text" required> <br/>
+														<input title="Query Text" placeholder="SELECT * FROM default.test_2" type="text" name="query_text" required> <br/>
 														<input type="submit" value="Spark Query" class="primary"> </input>
 													</div>
 											</form>
@@ -129,7 +122,7 @@
 												<h3>Spark Query SQL from Hive through API</h3>
 												<div class="row uniform">
 													<div class="12u$">
-														<input title="Query Text" placeholder="Table name. Ex test" type="text" name="table_name" required> <br/>
+														<input title="Query Text" placeholder="Table name in Hive. Ex test_2" type="text" name="table_name" required> <br/>
 														<input type="submit" value="Spark Hive Query" class="primary"> </input>
 													</div>
 											</form>

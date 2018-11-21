@@ -5,7 +5,7 @@ ENV="DEV"
 
 # WEB APP
 DEBUG = True
-HOST="localhost"
+HOST="127.0.0.1"
 
 # SPARK
 MASTER="local"
