@@ -6,4 +6,5 @@ def get_spark():
     return (SparkSession.builder
                 .master("local")
                 .appName("demo_web")
+                .enableHiveSupport()
                 .getOrCreate())
