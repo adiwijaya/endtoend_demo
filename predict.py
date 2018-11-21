@@ -6,7 +6,7 @@ import os.path
 def predict(sex,age):
     # Load Model
     my_path = os.path.abspath(os.path.dirname(__file__))
-    path = os.path.join(my_path, "../ml_model/model_risk.pkl")
+    path = os.path.join(my_path, "ml_model/model_risk.pkl")
 
     model_loaded = joblib.load(path)
 
