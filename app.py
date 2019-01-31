@@ -9,7 +9,12 @@ from predict import predict
 
 app=Flask(__name__)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:DataLabsP%40ssw0rd@209.97.167.105/default_db'
+
+#PostgreSQL
+#app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:DataLabsP%40ssw0rd@209.97.167.105/default_db'
+
+#MYSQL
+app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:DataLabsMapRP%40ssW%%@209.97.172.254/demo'
 db=SQLAlchemy(app)
 
 class Data(db.Model):
