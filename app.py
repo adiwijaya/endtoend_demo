@@ -3,7 +3,7 @@ from flask import Flask, render_template, request,session
 from flask_sqlalchemy import SQLAlchemy
 #from send_email import send_email
 from sqlalchemy.sql import func
-from util import get_random_email, get_timestamp,get_random_amount
+from util import *
 from settings import *
 from predict import predict
 
@@ -14,7 +14,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 #app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:DataLabsP%40ssw0rd@209.97.167.105/default_db'
 
 #MYSQL
-app.config['SQLALCHEMY_DATABASE_URI']='mysql://root:DataLabsMapRP%40ssW%%@209.97.172.254/demo'
+app.config['SQLALCHEMY_DATABASE_URI']='mysql://adi:AdiPassw0rd@209.97.172.254/demo'
 db=SQLAlchemy(app)
 
 class Data(db.Model):
@@ -27,17 +27,31 @@ class Data(db.Model):
         self.email_ = email_
         self.height_ = height_
 
-class TransactionData(db.Model):
-    __tablename__="transaction_data_dummy"
-    tx_id=db.Column(db.Integer,primary_key=True)
-    email = db.Column(db.String)
-    time_ = db.Column(db.TIMESTAMP)
-    amount_ = db.Column(db.Integer)
+class DimensionData(db.Model):
+    __tablename__="customer"
+    id=db.Column(db.Integer,primary_key=True)
+    name = db.Column(db.String)
+    age = db.Column(db.Integer)
+    time_inputed = db.Column(db.TIMESTAMP)
 
-    def __init__(self,email,time_,amount_):
-        self.email = email
-        self.time_ = time_
-        self.amount_ = amount_
+    def __init__(self,name,age,time_inputed):
+        self.name = name
+        self.age = age
+        self.time_inputed = time_inputed
+
+
+class TransactionData(db.Model):
+    __tablename__="cust_trx"
+    trx_id=db.Column(db.Integer,primary_key=True)
+    cust_id = db.Column(db.String)
+    value = db.Column(db.Integer)
+    time = db.Column(db.TIMESTAMP)
+
+
+    def __init__(self,cust_id,value,time):
+        self.cust_id = cust_id
+        self.value = value
+        self.time = time
 
 
 
@@ -202,21 +216,34 @@ def predict_ml_spark_api():
          result = requests.post(url, params=params, json=data)
          return render_template('index.html', text="SUCCESS, this process generate a prediction CSV in linux directory and hive table named model_predict_result")
 
+@app.route("/generate_random_dimension", methods=['POST'])
+def generate_random_dimension():
+    if request.method=='POST':
+
+        name = get_random_name()
+        time = get_timestamp()
+        age = get_random_age()
+
+        dim_data = DimensionData(name, age , time)
+        db.session.add(dim_data)
+        db.session.commit()
+
+        return render_template('index.html', text="This generate Dimension Data to Database, its an illustration for Customer Data. \n Random Customer Data Generated. Email %s , Time %s, Age %s"%(name,str(time),str(age)))
 
 
 @app.route("/generate_random_transaction", methods=['POST'])
 def generate_random_transaction():
     if request.method=='POST':
 
-        email = get_random_email()
+        cust_id = get_random_cust_id()
         time = get_timestamp()
         amount = get_random_amount()
 
-        tx_data = TransactionData(email, time , amount)
+        tx_data = TransactionData(cust_id, amount,time)
         db.session.add(tx_data)
         db.session.commit()
 
-        return render_template('index.html', text="This generate data to PostgreSQL Database, its an illustration for Transaction Apps. \n Random Transaction Data Generated. Email %s , Time %s, Amount %s"%(email,str(time),str(amount)))
+        return render_template('index.html', text="This generate data to PostgreSQL Database, its an illustration for Transaction Apps. \n Random Transaction Data Generated. Cust Id %s , Amount %s, Time %s"%(cust_id,str(amount),str(time)))
 
 @app.route("/postgres_to_hive", methods=['POST'])
 def postgres_to_hive():
