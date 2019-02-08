@@ -68,11 +68,11 @@ def success():
         print(height, weight)
 
         bmi =  weight/height
-        email = get_random_email()
+        #email = get_random_email()
 
-        data = Data(email, height)
-        db.session.add(data)
-        db.session.commit()
+        #data = Data(email, height)
+        #db.session.add(data)
+        #db.session.commit()
 
         return render_template('index.html', text="This is calculated using Python : Your BMI is %s \n This is a simple logic calculated in Python, Python is a multipurpose programming language"%bmi)
     return render_template('index.html', text="Seems like we got something from that email once!")
@@ -249,7 +249,7 @@ def generate_random_transaction():
 def postgres_to_hive():
     if request.method=='POST':
         import os
-        sqoopcom="sqoop import --connect jdbc:postgresql://%s/default_db --username postgres -password DataLabsP@ssw0rd --table transaction_data_dummy --hive-import --target-dir /user/hive/warehouse/transaction_data_dummy  --delete-target-dir --direct"%postgres_host
+        sqoopcom="sudo -u mapr sqoop import --connect jdbc:mysql://datalabs-mapr-02:3306/demo --driver com.mysql.jdbc.Driver --table customer --username mapr --password DataLabsMapRP@ssW%% --hive-import --hive-overwrite --hive-table sandbox.customer_tmp1 --delete-target-dir"
         os.system(sqoopcom)
 
         return render_template('index.html', text="This is simulation for batch ETL Process using sqoop. \n Success Transfer data from postgres to Hive, please check transaction_data_dummy in hive for access")
