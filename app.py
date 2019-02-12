@@ -39,7 +39,6 @@ class DimensionData(db.Model):
         self.age = age
         self.time_inputed = time_inputed
 
-
 class TransactionData(db.Model):
     __tablename__="cust_trx"
     trx_id=db.Column(db.Integer,primary_key=True)
@@ -244,6 +243,21 @@ def generate_random_transaction():
         db.session.commit()
 
         return render_template('index.html', text="This generate data to PostgreSQL Database, its an illustration for Transaction Apps. \n Random Transaction Data Generated. Cust Id %s , Amount %s, Time %s"%(cust_id,str(amount),str(time)))
+
+@app.route("/update_data_dimension", methods=['POST'])
+def update_data_dimension():
+    if request.method=='POST':
+
+        name = get_random_name()
+
+        row = DimensionData.query.filter_by(id=1).first()
+        row.name = name
+        row_2 = DimensionData.query.filter_by(id=2).first()
+        row_2.age = get_random_age()
+        db.session.commit()
+
+        return render_template('index.html', text="This update Dimension Data to Database")
+
 
 @app.route("/postgres_to_hive", methods=['POST'])
 def postgres_to_hive():
